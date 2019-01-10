@@ -6,93 +6,93 @@ import Header from './Header';
 import OptionModal from './OptionModal';
 
 export default class IndecisionApp extends React.Component {
-    state = {
-        options: this.props.options,
-        chosen: false,
-        option: undefined
+  state = {
+    options: this.props.options,
+    chosen: false,
+    option: undefined
+  }
+
+  handleRemoveAll = () => {
+    this.setState(() => ({ options: [] }));
+  }
+
+  handleDeleteOption = (option) => {
+    this.setState((prevState) => ({ options: prevState.options.filter((opt) => opt !== option) }));
+  }
+
+  handleNewOption = (newOption) => {
+    if (!newOption) {
+      return 'Insert a valid option';
     }
 
-    handleRemoveAll = () => {
-        this.setState(() => ({ options: [] }));
+    if (this.state.options.indexOf(newOption) !== -1) {
+      return 'The option already exists!';
     }
 
-    handleDeleteOption = (option) => {
-        this.setState((prevState) => ({ options: prevState.options.filter((opt) => opt !== option) }));
+    this.setState((prevState) => ({ options: prevState.options.concat([newOption]) }));
+  }
+
+  handlePick = () => {
+    if (this.state.options) {
+      const randomNum = Math.floor(Math.random() * this.state.options.length);
+      const option = this.state.options[randomNum];
+      const chosen = true;
+      this.setState(() => ({ chosen, option }));
     }
+  }
 
-    handleNewOption = (newOption) => {
-        if (!newOption) {
-            return 'Insert a valid option';
-        }
+  handleCloseModal = () => {
+    this.setState(() => ({ chosen: undefined }))
+  }
 
-        if (this.state.options.indexOf(newOption) !== -1) {
-            return 'The option already exists!';
-        }
-
-        this.setState((prevState) => ({ options: prevState.options.concat([newOption]) }));
+  componentDidMount() {
+    const json = localStorage.getItem("options");
+    if (json) {
+      const options = JSON.parse(json);
+      this.setState(() => ({ options }));
     }
+  }
 
-    handlePick = () => {
+  componentDidUpdate(prevProps, prevState) {
+    try {
+      if (prevState.options.length !== this.state.options.length) {
+        const json = JSON.stringify(this.state.options);
+
         if (this.state.options) {
-            const randomNum = Math.floor(Math.random() * this.state.options.length);
-            const option = this.state.options[randomNum];
-            const chosen = true;
-            this.setState(() => ({ chosen, option }));
+          localStorage.setItem("options", json);
         }
-    }
 
-    handleCloseModal = () => {
-        this.setState(() => ({ chosen: undefined }))
+      }
+    } catch (error) {
+      // Do nothing
     }
+  }
 
-    componentDidMount() {
-        const json = localStorage.getItem("options");
-        if (json) {
-            const options = JSON.parse(json);
-            this.setState(() => ({ options }));
-        }
-    }
+  render() {
+    return (
+      <div>
+        <Header subtitle="Put your life in the hands of a computer!" />
+        <div className="container">
+          <Action
+            hasOptions={this.state.options.length > 0}
+            handlePick={this.handlePick}
+          />
+          <div className="widget">
+            <Options
+              options={this.state.options}
+              handleRemoveAll={this.handleRemoveAll}
+              handleDeleteOption={this.handleDeleteOption}
+            />
+            <AddOption handleNewOption={this.handleNewOption} />
+          </div>
 
-    componentDidUpdate(prevProps, prevState) {
-        try {
-            if (prevState.options.length !== this.state.options.length) {
-                const json = JSON.stringify(this.state.options);
-    
-                if (this.state.options) {
-                    localStorage.setItem("options", json);
-                }
-                
-            }
-        } catch (error) {
-            // Do nothing
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <Header subtitle="Put your life in the hands of a computer!" />
-                <div className="container">
-                    <Action 
-                        hasOptions={this.state.options.length > 0}
-                        handlePick={this.handlePick} 
-                    />
-                    <div className="widget">
-                        <Options 
-                            options={this.state.options} 
-                            handleRemoveAll={this.handleRemoveAll}
-                            handleDeleteOption={this.handleDeleteOption}
-                        />
-                        <AddOption handleNewOption={this.handleNewOption} />
-                    </div>
-                   
-                </div>
-                <OptionModal chosen={this.state.chosen} option={this.state.option} onClose={this.handleCloseModal} />
-            </div>
-        );
-    }
+        </div>
+        <OptionModal chosen={this.state.chosen} option={this.state.option} onClose={this.handleCloseModal} />
+      </div>
+    );
+  }
 }
 
 IndecisionApp.defaultProps = {
-    options: []
+  options: []
 }
