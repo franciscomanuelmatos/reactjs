@@ -3,7 +3,6 @@ node_modules
 /dist
 /public/bundle.js
 /old
-/src/store
 
 # local env files
 .env.local
