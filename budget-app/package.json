@@ -10,9 +10,10 @@
     "dev-server": "webpack-dev-server"
   },
   "dependencies": {
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-modal": "2.2.2",
+    "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
     "uuid": "^3.3.2"
