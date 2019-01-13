@@ -24,7 +24,13 @@ store.dispatch(addExpense({
 
 store.dispatch(addExpense({
   description: 'Water Bill',
-  amount: 5000
+  amount: 5500
+}));
+
+store.dispatch(addExpense({
+  description: 'Gas Bill',
+  amount: 1095,
+  createdAt: 1000
 }));
 
 ReactDOM.render(jsx, document.getElementById('app'));
