@@ -1,23 +1,10 @@
 
 import expensesReducer from '../../reducers/expenses';
 import { ADD_EXPENSE, EDIT_EXPENSE, REMOVE_EXPENSE } from '../../actions/actionTypes';
+import expenses from '../fixtures/expenses';
 
-const testExpenseOne = {
-  id: '1',
-  description: 'rent',
-  note: '',
-  amount: 2500,
-  createdAt: 100
-}
-
-const testExpenseTwo = {
-  id: '2',
-  description: 'credit card',
-  note: '',
-  amount: 50000,
-  createdAt: -100
-}
-
+const testExpenseOne = expenses[0];
+const testExpenseTwo = expenses[1];
 const initialState = [testExpenseOne, testExpenseTwo];
 
 
