@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import AppRouter from './routers/AppRouter';
+import configStore from './store/index';
+import configNumeral from './config/numeral';
 import 'normalize.css/normalize.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import './styles/styles.scss';
-import configStore from './store/index';
-import { addExpense } from './actions/expenses';
+
+
+configNumeral();
 
 const store = configStore();
 
@@ -17,22 +20,6 @@ const jsx = (
     <AppRouter />
   </Provider>
 );
-
-store.dispatch(addExpense({
-  description: 'Rent',
-  amount: 5000
-}));
-
-store.dispatch(addExpense({
-  description: 'Water Bill',
-  amount: 5500
-}));
-
-store.dispatch(addExpense({
-  description: 'Gas Bill',
-  amount: 1095,
-  createdAt: 1000
-}));
 
 ReactDOM.render(jsx, document.getElementById('app'));
 
