@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 
-import { ADD_EXPENSE, REMOVE_EXPENSE, EDIT_EXPENSE } from './actionTypes';
+import { ADD_EXPENSE, REMOVE_EXPENSE, EDIT_EXPENSE, SET_EXPENSES } from './actionTypes';
 import database from '../firebase/firebase';
 
 export const addExpense = (expense) => ({
@@ -39,3 +39,25 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+// SET_EXPENSES
+export const setExpenses = (expenses) => ({
+  type: SET_EXPENSES,
+  expenses
+});
+
+export const startSetExpenses = () => {
+  return (dispatch) => {
+    return database.ref('expenses').once('value')
+      .then((snapshot) => {
+        const expenses = [];
+        snapshot.forEach((childSnapshot) => {
+          expenses.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
+          });
+        });
+        dispatch(setExpenses(expenses));
+      });
+  }
+};

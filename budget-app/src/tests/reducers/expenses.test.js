@@ -1,6 +1,6 @@
 
 import expensesReducer from '../../reducers/expenses';
-import { ADD_EXPENSE, EDIT_EXPENSE, REMOVE_EXPENSE } from '../../actions/actionTypes';
+import { ADD_EXPENSE, EDIT_EXPENSE, REMOVE_EXPENSE, SET_EXPENSES } from '../../actions/actionTypes';
 import expenses from '../fixtures/expenses';
 
 const testExpenseOne = expenses[0];
@@ -56,7 +56,9 @@ test('should edit expense', () => {
   ]);
 })
 
-test('should not edit expense if id not found', () => {
+test('should not edit expense if id not found', () => {afterAll((done) => {
+  database.ref().remove().then(() => done());
+})
   const updates = {
     description: 'water bill',
     amount: 50000,
@@ -92,4 +94,14 @@ test('should not remove expense if id not found', () => {
   const state = expensesReducer(initialState, action);
 
   expect(state).toEqual(initialState)
-})
+});
+
+test('should set expenses', () => {
+  const action = {
+    type: SET_EXPENSES,
+    expenses
+  }
+
+  const state = expensesReducer(initialState, action);
+  expect(state).toEqual(expenses);
+});
