@@ -15,7 +15,7 @@ module.exports = (env) => {
 
   return {
     entry: './src/app.js',
-    mode: env,
+    mode: isProduction ? 'production' : 'development',
     plugins: [
       new MiniCssExtractPlugin({
         filename: 'styles.css'
