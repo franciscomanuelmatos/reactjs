@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-import Header from '../components/Header';
-
 export const PublicRoute = ({
   isAuthenticated,
   component: Component,
@@ -16,7 +14,7 @@ export const PublicRoute = ({
 );
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.uid !== null
+  isAuthenticated: state.auth.uid !== undefined
 });
 
 export default connect(mapStateToProps)(PublicRoute);
